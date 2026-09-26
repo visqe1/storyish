@@ -42,11 +42,11 @@ create table if not exists inspo_resources (
 
 alter table resources drop constraint if exists resources_categories_check;
 alter table resources add constraint resources_categories_check
-  check (categories <@ array['aesthetic','minimal','birthday','cottagecore','summer','y2k','ascii','cool','symbols']::text[]);
+  check (categories <@ array['y2k','cool','cute','food','ascii','symbols']::text[]);
 
 alter table inspo_examples drop constraint if exists inspo_examples_categories_check;
 alter table inspo_examples add constraint inspo_examples_categories_check
-  check (categories <@ array['aesthetic','minimal','birthday','cottagecore','summer','y2k','ascii','cool','symbols']::text[]);
+  check (categories <@ array['y2k','cool','cute','food','ascii','symbols']::text[]);
 
 -- Row Level Security: the app reads with the public anon key, so allow
 -- anyone to SELECT, but nobody can INSERT/UPDATE/DELETE through the API.
@@ -69,52 +69,7 @@ drop policy if exists "public can read inspo_resources" on inspo_resources;
 create policy "public can read inspo_resources" on inspo_resources
   for select using (true);
 
--- Seed data — the starting catalog the app ships with.
-
-insert into resources (slug, type, glyph, label, categories) values
-  ('sparkle', 'sticker', '✨', 'sparkle', array['aesthetic']),
-  ('blossom', 'sticker', '🌸', 'blossom', array['cottagecore']),
-  ('butterfly', 'sticker', '🦋', 'butterfly', array['aesthetic']),
-  ('moon', 'sticker', '🌙', 'moon', array['minimal']),
-  ('bow', 'sticker', '🎀', 'bow', array['birthday']),
-  ('heart', 'symbol', '♡', 'heart', array['birthday']),
-  ('star', 'symbol', '★', 'star', array['minimal']),
-  ('cloud', 'sticker', '☁️', 'cloud', array['aesthetic']),
-  ('cake', 'sticker', '🎂', 'cake', array['birthday']),
-  ('coffee', 'sticker', '☕', 'coffee', array['minimal']),
-  ('wave', 'sticker', '🌊', 'wave', array['summer']),
-  ('sun', 'sticker', '☀️', 'sun', array['summer']),
-  ('shell', 'sticker', '🐚', 'shell', array['summer']),
-  ('leaf', 'sticker', '🍃', 'leaf', array['cottagecore']),
-  ('balloon', 'sticker', '🎈', 'balloon', array['birthday']),
-  ('twinkle', 'symbol', '✧', 'twinkle', array['y2k']),
-  ('good-vibes', 'text', 'good vibes', 'good vibes', array['aesthetic']),
-  ('golden', 'text', 'golden', 'golden', array['minimal']),
-  ('hbd', 'text', 'hbd!', 'hbd!', array['birthday']),
-  ('focus', 'text', 'focus', 'focus', array['cottagecore']),
-  ('morning', 'text', 'morning', 'morning', array['minimal']),
-  ('salty-air', 'text', 'salty air', 'salty air', array['summer'])
-on conflict (slug) do nothing;
-
-insert into inspo_examples (slug, title, categories, motif) values
-  ('soft-hours', 'soft hours', array['aesthetic'], '✨'),
-  ('golden-hour', 'golden hour', array['minimal'], '🌙'),
-  ('birthday-girl', 'birthday girl', array['birthday'], '🎀'),
-  ('study-day', 'study day', array['cottagecore'], '🌸'),
-  ('coffee-run', 'coffee run', array['minimal'], '☕'),
-  ('beach-daze', 'beach daze', array['summer'], '🌊')
-on conflict (slug) do nothing;
-
-insert into inspo_resources (inspo_slug, resource_slug, position) values
-  ('soft-hours', 'sparkle', 0), ('soft-hours', 'cloud', 1), ('soft-hours', 'heart', 2), ('soft-hours', 'good-vibes', 3),
-  ('golden-hour', 'moon', 0), ('golden-hour', 'sparkle', 1), ('golden-hour', 'star', 2), ('golden-hour', 'golden', 3),
-  ('birthday-girl', 'bow', 0), ('birthday-girl', 'cake', 1), ('birthday-girl', 'heart', 2), ('birthday-girl', 'hbd', 3),
-  ('study-day', 'blossom', 0), ('study-day', 'leaf', 1), ('study-day', 'cloud', 2), ('study-day', 'focus', 3),
-  ('coffee-run', 'coffee', 0), ('coffee-run', 'sparkle', 1), ('coffee-run', 'star', 2), ('coffee-run', 'morning', 3),
-  ('beach-daze', 'wave', 0), ('beach-daze', 'sun', 1), ('beach-daze', 'shell', 2), ('beach-daze', 'salty-air', 3)
-on conflict (inspo_slug, resource_slug) do nothing;
-
--- The ascii-art piece added after the initial seed.
+-- Catalog content — the ascii-art piece added first.
 insert into resources (slug, type, glyph, label, categories) values (
   'multi-star',
   'ascii',
@@ -175,3 +130,40 @@ insert into inspo_resources (inspo_slug, resource_slug, position) values
   ('navy-star-cool-music', 'star-swirl-combo', 2),
   ('navy-star-cool-music', 'multi-star', 3)
 on conflict (inspo_slug, resource_slug) do update set position = excluded.position;
+
+-- A batch of real sticker PNGs, tagged cute (and food for the food ones).
+insert into resources (slug, type, glyph, label, categories, image_url) values
+  ('blue-button', 'sticker', '🔘', 'blue button', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/blue-button.PNG'),
+  ('blue-pin', 'sticker', '📌', 'blue pin', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/blue-pin.PNG'),
+  ('blue-star', 'sticker', '⭐', 'blue star', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/blue-star.PNG'),
+  ('blue-swirl-button', 'sticker', '🔘', 'blue swirl button', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/blue-swirl-button.PNG'),
+  ('pancake', 'sticker', '🥞', 'pancake', array['cute','food'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/pancake.PNG'),
+  ('pudding', 'sticker', '🍮', 'pudding', array['cute','food'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/pudding.PNG'),
+  ('rila-bread', 'sticker', '🍞', 'rila bread', array['cute','food'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/rila-bread.PNG'),
+  ('rila', 'sticker', '🐻', 'rila', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/rila.PNG'),
+  ('soda-poster', 'sticker', '🥤', 'soda poster', array['cute','food'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/soda-poster.JPG'),
+  ('teal-music', 'sticker', '🎵', 'teal music', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/teal-music.PNG'),
+  ('yellow-button', 'sticker', '🟡', 'yellow button', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/yellow-button.PNG'),
+  ('yellow-fish', 'sticker', '🐟', 'yellow fish', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/yellow-fish.PNG'),
+  ('yellow-note', 'sticker', '🎵', 'yellow note', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/yellow-note.PNG'),
+  ('yellow-star', 'sticker', '⭐', 'yellow star', array['cute'],
+    'https://xqanikthifafbhofvukt.supabase.co/storage/v1/object/public/storyish-assets/yellow-star.PNG')
+on conflict (slug) do update set
+  type = excluded.type,
+  glyph = excluded.glyph,
+  label = excluded.label,
+  categories = excluded.categories,
+  image_url = excluded.image_url;

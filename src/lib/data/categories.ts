@@ -1,11 +1,8 @@
 export const categories = [
   "y2k",
   "cool",
-  "aesthetic",
-  "minimal",
-  "birthday",
-  "cottagecore",
-  "summer",
+  "cute",
+  "food",
   "ascii",
   "symbols",
 ] as const;
