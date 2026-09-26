@@ -47,46 +47,51 @@ export default function StickerCard({
       type="button"
       onClick={handleCopy}
       aria-label={`copy ${resource.label}`}
-      className={`group relative flex aspect-square w-full flex-col items-center justify-center gap-2.5 overflow-hidden bg-linen shadow-[0_6px_16px_rgba(107,86,70,0.14)] transition-transform hover:-translate-y-0.5 ${
+      className={`group relative flex aspect-square w-full flex-col overflow-hidden bg-linen shadow-[0_6px_16px_rgba(107,86,70,0.14)] transition-transform hover:-translate-y-0.5 ${
         compact ? "rounded-2xl" : "rounded-[22px]"
       }`}
     >
-      <span className="pointer-events-none absolute -left-4 -top-4 h-12 w-12 rounded-full bg-white/35" />
-      {resource.imageUrl ? (
-        <Image
-          src={resource.imageUrl}
-          alt={resource.label}
-          width={compact ? 32 : 44}
-          height={compact ? 32 : 44}
-          className="object-contain"
-        />
-      ) : isTextGlyph ? (
-        <span
-          className={`flex min-h-[1.7rem] w-full items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap px-2.5 font-display font-medium ${
-            compact ? "text-[0.68rem]" : "text-[0.8rem]"
-          }`}
-        >
-          {resource.glyph}
-        </span>
-      ) : isAsciiGlyph ? (
-        <pre
-          className={`whitespace-pre font-mono leading-[1.1] text-ink ${
-            compact ? "text-[3.2px]" : "text-[5.5px]"
-          }`}
-        >
-          {resource.glyph}
-        </pre>
-      ) : (
-        <span className={compact ? "text-[1.5rem] leading-none" : "text-[1.9rem] leading-none"}>
-          {resource.glyph}
-        </span>
-      )}
-      <span className={`font-bold lowercase text-ink ${compact ? "text-[0.64rem]" : "text-[0.72rem]"}`}>
+      <div className={`relative min-h-0 flex-1 ${compact ? "p-3.5" : "p-6"}`}>
+        {resource.imageUrl ? (
+          <Image src={resource.imageUrl} alt={resource.label} fill className="object-contain" />
+        ) : isTextGlyph ? (
+          <div
+            className={`absolute inset-0 flex items-center justify-center px-2 text-center font-display font-medium leading-tight ${
+              compact ? "text-[0.58rem]" : "text-[0.84rem]"
+            }`}
+          >
+            {resource.glyph}
+          </div>
+        ) : isAsciiGlyph ? (
+          <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+            <pre
+              className={`whitespace-pre font-mono leading-[1.1] text-ink ${
+                compact ? "text-[3px]" : "text-[5px]"
+              }`}
+            >
+              {resource.glyph}
+            </pre>
+          </div>
+        ) : (
+          <div
+            className={`absolute inset-0 flex items-center justify-center leading-none ${
+              compact ? "text-[1.5rem]" : "text-[2.1rem]"
+            }`}
+          >
+            {resource.glyph}
+          </div>
+        )}
+      </div>
+      <span
+        className={`shrink-0 text-center font-bold lowercase text-ink ${
+          compact ? "pb-1 text-[0.6rem]" : "pb-1.5 text-[0.68rem]"
+        }`}
+      >
         {resource.label}
       </span>
 
       <span
-        className={`pointer-events-none absolute bottom-3.5 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-ink px-3 py-1 text-[0.7rem] font-bold lowercase text-surface transition-all ${
+        className={`pointer-events-none absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-ink px-3 py-1 text-[0.7rem] font-bold lowercase text-surface transition-all ${
           copied ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
         }`}
       >

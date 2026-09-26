@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { categories, type Category } from "@/lib/data/categories";
 import { getAllInspo } from "@/lib/data/inspo";
@@ -25,6 +26,12 @@ export default async function InspoPage({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-8 pb-15">
+      <Link
+        href="/"
+        className="mb-4.5 inline-flex items-center gap-1.5 text-[0.8rem] font-extrabold lowercase text-ink-muted hover:text-accent-strong"
+      >
+        &larr; home
+      </Link>
       <h1 className="text-2xl lowercase">all story inspo</h1>
       <p className="mt-1 mb-3.5 text-[0.72rem] font-extrabold tracking-[0.14em] text-ink-muted lowercase">
         browse by mood

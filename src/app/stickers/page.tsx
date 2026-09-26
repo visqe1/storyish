@@ -1,9 +1,11 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { categories, type Category } from "@/lib/data/categories";
 import { getAllResources } from "@/lib/data/resources";
 import StickerCard from "@/components/StickerCard";
 import CategoryPills from "@/components/CategoryPills";
 import SearchBox from "@/components/SearchBox";
+import { stableShuffle } from "@/lib/shuffle";
 
 export const metadata: Metadata = { title: "all stickers — storyish" };
 
@@ -20,7 +22,7 @@ export default async function StickersPage({
   const activeCategory: Category | "all" = isCategory(params.category) ? params.category : "all";
   const q = params.q?.trim().toLowerCase() ?? "";
 
-  const resources = await getAllResources();
+  const resources = stableShuffle(await getAllResources());
   const filtered = resources.filter((r) => {
     const matchesCategory = activeCategory === "all" || r.categories.includes(activeCategory);
     const matchesQuery = !q || r.label.toLowerCase().includes(q);
@@ -29,6 +31,12 @@ export default async function StickersPage({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-8 pb-15">
+      <Link
+        href="/"
+        className="mb-4.5 inline-flex items-center gap-1.5 text-[0.8rem] font-extrabold lowercase text-ink-muted hover:text-accent-strong"
+      >
+        &larr; home
+      </Link>
       <h1 className="text-2xl lowercase">all stickers</h1>
       <p className="mt-1 mb-3.5 text-[0.72rem] font-extrabold tracking-[0.14em] text-ink-muted lowercase">
         browse by mood

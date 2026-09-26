@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg: #faf6f1;
-  --color-surface: #fffcf9;
-  --color-linen: #f2e6d8;
-  --color-strawberry: #f6c7cf;
-  --color-peach: #f7d8cc;
-  --color-almond: #eadfd6;
-  --color-ink: #6b5646;
-  --color-ink-muted: #9c8879;
-  --color-line: #e7d9cb;
-  --color-accent: #c97389;
-  --color-accent-strong: #b85c78;
+  --color-bg: #f0e9da;
+  --color-surface: #f8f4eb;
+  --color-linen: #f5efe0;
+  --color-strawberry: #ead9be;
+  --color-peach: #dccbb0;
+  --color-almond: #e6dcc8;
+  --color-ink: #8b6f4e;
+  --color-ink-muted: #aa8f6e;
+  --color-line: #ded2b8;
+  --color-accent: #a9835a;
+  --color-accent-strong: #8b6a42;
 }
 
 @theme inline {
@@ -52,4 +52,14 @@ h1, h2, h3 {
 .shelf-track::-webkit-scrollbar-thumb {
   background: var(--color-almond);
   border-radius: 999px;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(to right, var(--color-ink) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-ink) 1px, transparent 1px);
+  background-size: 36px 36px;
+  opacity: 0.14;
+  -webkit-mask-image: linear-gradient(to left, black, transparent 75%);
+  mask-image: linear-gradient(to left, black, transparent 75%);
 }
