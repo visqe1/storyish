@@ -2,14 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getAllInspo, getInspo, getInspoResources } from "@/lib/data/inspo";
+import { getInspo, getInspoResources } from "@/lib/data/inspo";
 import StickerCard from "@/components/StickerCard";
 import { cardTone, toneIndexForSlug } from "@/lib/palette";
 
-export async function generateStaticParams() {
-  const examples = await getAllInspo();
-  return examples.map((e) => ({ slug: e.slug }));
-}
+// Content is curated directly in Supabase rather than redeployed, so this
+// page always renders fresh instead of serving a stale build-time snapshot.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,

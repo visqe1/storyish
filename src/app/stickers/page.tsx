@@ -9,6 +9,10 @@ import { stableShuffle } from "@/lib/shuffle";
 
 export const metadata: Metadata = { title: "all stickers — storyish" };
 
+// Content is curated directly in Supabase rather than redeployed, so this
+// page always renders fresh instead of serving a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 function isCategory(value: string | undefined): value is Category {
   return !!value && (categories as readonly string[]).includes(value);
 }

@@ -5,6 +5,10 @@ import { getAllResources } from "@/lib/data/resources";
 import { getAllInspo } from "@/lib/data/inspo";
 import { stableShuffle } from "@/lib/shuffle";
 
+// Content is curated directly in Supabase rather than redeployed, so this
+// page always renders fresh instead of serving a stale build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const [resources, inspoExamples] = await Promise.all([getAllResources(), getAllInspo()]);
   const stickerPreview = stableShuffle(resources).slice(0, 8);
